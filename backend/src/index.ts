@@ -1,17 +1,44 @@
 import http from "http";
+import * as dotenv from "dotenv";
+dotenv.config();
 
-const server = http.createServer( (request, response) => {
-    console.log("Received Request");
-    response.writeHead(200, { "Content-Type": "text/html"});
-    response.write("Hello world");
-    response.end();
-})
+import fs from "fs/promises";
+import path from "path"
+
+const server = http.createServer( async (req, res) => {
+
+    const indexFile = await fs.readFile(path.resolve(__dirname, 'public', 'index.html'))
+        .catch( err => {
+            console.error(err);
+            res.setHeader('Content-Type', 'text/html');
+            res.writeHead(500);
+            return res.end(err);
+        });
+
+    // we can now assume that indexFile holds the contents of the file
+    res.setHeader('Content-Type', 'text/html');
+    res.writeHead(200);
+    return res.end(indexFile);
+
+    // Old bad synchronous way
+    /*fs.readFile(path.resolve(__dirname, 'public', 'index.html'), (err, data) => {
+        res.setHeader("Content-Type", "text/html");
+        if (err) {
+            res.writeHead(500);
+            return res.end("Some error occurred:");
+        }
+
+        res.writeHead(200);
+        return res.end(data);
+    })*/
+
+});
 
 // port 80 443
 
-server.listen(3000, () => {
+server.listen(process.env.PORT, () => {
     console.log("Listening...");
-})
+});
 
 // import {App} from "./app";
 // import {FastifyInstance} from "fastify";
