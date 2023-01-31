@@ -11,6 +11,8 @@ import {Nastify} from "./nastify";
 
 const app = Nastify();
 
+console.log(app);
+
 app.use("/about", cors());
 app.use("/get", cors());
 
@@ -21,6 +23,26 @@ app.get("/about", (req, res) => {
 app.post("/about", (req, res) => {
     res.send("I am POST REQUEST");
 })
+
+app.get("/users", (req, res) => {
+
+})
+
+
+/*
+
+app.get('/users", (req, res) => {
+
+}
+
+app.post('/users", (req, res) => {
+
+}
+
+app.put('/users", (req, res) => {
+
+}
+ */
 
 app.get("/", async (req, res) => {
 

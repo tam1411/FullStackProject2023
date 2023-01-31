@@ -4,6 +4,7 @@ import {Route} from "./route";
 export class Router {
     // This is PathHandler FOR A REASON!  We're caching this in the router for performance
     // let this be a lesson - being clever is awful for maintainers
+    // stack.forEach( (r) => if (r.path === reqPath) then execute handler
     private stack: PathHandler[];
 
     constructor() {
