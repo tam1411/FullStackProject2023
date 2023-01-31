@@ -2,25 +2,18 @@ import {PathHandler} from "./pathHandler";
 import {Route} from "./route";
 
 export class Router {
+    // This is PathHandler FOR A REASON!  We're caching this in the router for performance
+    // let this be a lesson - being clever is awful for maintainers
     private stack: PathHandler[];
 
     constructor() {
-        // this.stack = [
-        //     new PathHandler("*", (req, res) => {
-        //         res.statusCode = 404;
-        //         res.setHeader('Content-Type', 'text/plain');
-        //         res.end(`Cannot find ${req.url}`);
-        //     }),
-        // ]
-
-        let defaultRoute = new Route("*");
-        let ph = new PathHandler("*", (req, res) => {
-            res.statusCode = 404;
-                     res.setHeader('Content-Type', 'text/plain');
-                     res.end(`Cannot find ${req.url}`);
-        });
-        ph.route = defaultRoute;
-
+        this.stack = [
+            new PathHandler("*", (req, res) => {
+                res.statusCode = 404;
+                res.setHeader('Content-Type', 'text/plain');
+                res.end(`Cannot find ${req.url}`);
+            }),
+        ]
     }
 
     // iterate through PathHandlers looking for a matching path with request path
@@ -34,7 +27,7 @@ export class Router {
                 return false;
             }
 
-            const { matched = false, params = {} } = item.requestHandler(req.pathname);
+            const { matched = false, params = {} } = item.match(req.pathname);
 
             if (matched && item.route && item.route.requestHandler(method)) {
                 found = true;
@@ -48,11 +41,17 @@ export class Router {
 
     createRoute(path) {
         const route = new Route(path);
-        const ph = new PathHandler(path, (req, res) => route.dispatch(req, res));
-        ph.route = route;
-        this.stack.push(route);
+        const layer = new PathHandler(path, (req, res) => route.dispatch(req, res));
+        layer.route = route;
+        this.stack.push(layer);
 
         return route;
+        // const route = new Route(path);
+        // const ph = new PathHandler(path, (req, res) => route.dispatch(req, res));
+        // ph.route = route;
+        // this.stack.push(route);
+        //
+        // return route;
     }
 
     get(path, handler) {
