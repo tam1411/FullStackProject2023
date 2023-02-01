@@ -2,19 +2,23 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
+  "type": "module",
   "scripts": {
-    "dev": "ts-node-dev --respawn src/index.ts",
-    "devFast": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "dev": "nodemon --exec ts-node src/index.ts --project ./tsconfig.json",
     "build": "vitest run && tsc",
     "start": "node build/index.js",
     "lint": "eslint . --ext .ts",
     "test": "vitest"
   },
+  "scriptsComments":{
+    "dev": "Swapped to nodemon due to https://github.com/wclr/ts-node-dev/issues/314"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fastify/middie": "^8.1.0",
     "axios": "^1.2.2",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
@@ -30,7 +34,6 @@
     "nodemon": "^2.0.20",
     "supertest": "^6.3.3",
     "ts-node": "^10.9.1",
-    "ts-node-dev": "^2.0.0",
     "typescript": "^4.9.4",
     "vitest": "^0.27.1"
   }
