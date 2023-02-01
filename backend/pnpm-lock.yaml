@@ -12,7 +12,6 @@ specifiers:
   '@vitest/ui': ^0.28.3
   c8: ^7.12.0
   cors: ^2.8.5
-  dotenv: ^16.0.3
   eslint: ^8.31.0
   fastify: ^4.11.0
   fastify-cli: ^5.7.0
@@ -30,7 +29,6 @@ dependencies:
   '@fastify/middie': 8.1.0
   '@fastify/static': 6.8.0
   cors: 2.8.5
-  dotenv: 16.0.3
   fastify: 4.12.0
   fastify-cors: 6.1.0
   fastify-env: 2.2.0
@@ -1054,6 +1052,7 @@ packages:
   /dotenv/16.0.3:
     resolution: {integrity: sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==}
     engines: {node: '>=12'}
+    dev: true
 
   /eastasianwidth/0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}

@@ -33,7 +33,7 @@ async function getStaticFile(reply: FastifyReply, filePath: string) {
 }
 
 
-export async function setupRoutes(app: FastifyInstance) {
+export async function doggr_routes(app: FastifyInstance) {
 
 	app.use(cors());
 

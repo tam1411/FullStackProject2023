@@ -1,12 +1,8 @@
-import * as dotenv from "dotenv";
-dotenv.config();
-
-//import {Nastify} from "./nastify";
 import Fastify from "fastify";
 // This will let us use our basic middlewares now, then transition to hooks later
 import fastifyMiddie from "@fastify/middie"
 import staticFiles from "@fastify/static";
-import {setupRoutes} from "./routes";
+import {doggr_routes} from "./routes";
 import path from "path";
 import {getDirName} from "./lib/helpers";
 
@@ -21,21 +17,20 @@ export async function buildApp(enableLogging: boolean) {
 
 	await app.register(staticFiles, {
 		root: path.join(getDirName(import.meta), 'public'),
-		prefix: '/public/', // optional: default '/'
+		prefix: '/public/',
 	});
 
-	await app.register(setupRoutes);
+	await app.register(doggr_routes);
 
 	return app;
 }
-
 
 // lookie, now we have top level await!
 const app = await buildApp(true);
 
 try {
 	void await app.listen(
-		{ host: import.meta.env.VITE_IP_ADDR, port: Number(import.meta.env.VITE_PORT) },
+		{ host: import.meta.env["VITE_IP_ADDR"], port: Number(import.meta.env["VITE_PORT"]) },
 		(err) => {
 			// much nicer logging!
 			if (err) {

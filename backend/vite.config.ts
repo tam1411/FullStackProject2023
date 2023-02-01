@@ -10,15 +10,23 @@ import { configDefaults, defineConfig } from 'vitest/config'
 const vitestConfig: VitestUserConfigInterface = {
 	test: {
 		globals: true,
-		exclude: [...configDefaults.exclude, './src', 'packages/template/*'],
+		exclude: [...configDefaults.exclude, 'packages/template/*'],
 		reporters: 'verbose',
-		include: ["./test/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"]
+		include: ["./test/**/*.{test,spec}.{ts,mts,cts,tsx}"],
+		includeSource: ['src/**/*.ts', 'src/']
 	}
 };
 
 
 export default defineConfig({
 	test: vitestConfig.test,
+	cache: true,
+	build: {
+		emptyOutDir: true,
+		outDir: "build",
+		target: 'esnext'
+	},
+	publicDir: "src/public",
 	server: {
 		// vite server configs, for details see [vite doc](https://vitejs.dev/config/#server-host)
 		port: 8080
