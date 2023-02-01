@@ -1,3 +1,5 @@
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
 export function checkMiddlewareInputs(args) {
     let path = "*";
@@ -40,4 +42,14 @@ export function matchPath(setupPath, currentPath) {
     const isMatch = match ? { matched: true, params } : { matched: false };
 
     return isMatch;
+}
+
+// DIY __dirname since it's removed from ES Modules:
+// https://codingbeautydev.com/blog/javascript-dirname-is-not-defined-in-es-module-scope/
+export function getDirName(meta) {
+    const __filename = fileURLToPath(meta.url);
+
+    const __dirname = dirname(__filename);
+
+    return __dirname;
 }
