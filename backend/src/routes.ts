@@ -3,7 +3,7 @@ import fs from "fs/promises";
 import path from "path";
 import {getDirName} from "./lib/helpers";
 import {FastifyInstance, FastifyReply, FastifyRequest} from "fastify";
-import {FastifyRequestType} from "fastify/types/type-provider";
+
 import {usersData} from "./lib/mockData";
 
 function areWeTestingWithJest() {
@@ -44,7 +44,7 @@ export async function doggr_routes(app: FastifyInstance) {
 	});
 
 	app.get("/", async (request: FastifyRequest, reply: FastifyReply) => {
-		return reply.sendFile("index.html");
+		return reply.status(200).sendFile("index.html");
 	});
 
 	app.post("/users", async function createUser(request: FastifyRequest, reply: FastifyReply) {

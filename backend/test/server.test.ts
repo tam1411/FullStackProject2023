@@ -8,13 +8,21 @@ import {usersData} from '../src/lib/mockData';
 
 let app;
 
+
+beforeAll(async () => {
+  // called once before all tests run
+  app = await buildApp(false);
+  await app.ready();
+});
+
+
+afterAll(async () => {
+  await app.close();
+});
+
+
 describe('testing the test framework itself', () => {
 
-  it('serves GET index page with 200 status', async () => {
-    const res = await app.inject('/');
-    expect(res.statusCode)
-      .toEqual(200);
-  });
 
   it('performs vitest injection requests properly', async () => {
     const response = await app.inject({
@@ -29,6 +37,7 @@ describe('testing the test framework itself', () => {
     expect(JSON.parse(response.payload))
       .toStrictEqual(usersData);
   });
+
 
   it('can use supertest-based API testing in addition to vitest injection', async () => {
     await app.ready();
@@ -45,6 +54,16 @@ describe('testing the test framework itself', () => {
 });
 
 describe("Route testing", () => {
+
+  it('serves static file with 200 status', async () => {
+    const res = await app.inject({
+      method: 'GET',
+      url: '/',
+    });
+    expect(res.statusCode)
+      .toEqual(200);
+  });
+
   it("GETs /about properly", async () => {
     const response = await app.inject({
       method: "GET",
@@ -55,6 +74,20 @@ describe("Route testing", () => {
       .toBe(200);
     expect(response.payload)
       .toBe("about:GET");
+  });
+
+  it("POSTs to /users properly", async () => {
+    const payload = {
+      newUser: "george"
+    }
+    const response = await app.inject({
+      method: "POST",
+      url: "/users",
+      payload
+    })
+
+    expect(response.statusCode).toBe(201);
+    expect(response.payload).toBe(JSON.stringify(payload));
   });
 
   it("GETs the proper userID back from /users/:userID", async () => {
@@ -70,14 +103,3 @@ describe("Route testing", () => {
   });
 });
 
-
-beforeAll(async () => {
-  // called once before all tests run
-  app = await buildApp(false);
-  await app.ready();
-});
-
-
-afterAll(async () => {
-  await app.close();
-});

@@ -16,7 +16,7 @@ export async function buildApp(enableLogging: boolean) {
 	await app.register(fastifyMiddie);
 
 	await app.register(staticFiles, {
-		root: path.join(getDirName(import.meta), 'public'),
+		root: path.join(getDirName(import.meta), '../public'),
 		prefix: '/public/',
 	});
 
