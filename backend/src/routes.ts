@@ -4,6 +4,7 @@ import path from "path";
 import {getDirName} from "./lib/helpers";
 import {FastifyInstance, FastifyReply, FastifyRequest} from "fastify";
 import {FastifyRequestType} from "fastify/types/type-provider";
+import {usersData} from "./lib/mockData";
 
 function areWeTestingWithJest() {
 	return process.env['JEST_WORKER_ID'] !== undefined;
@@ -43,7 +44,7 @@ export async function setupRoutes(app: FastifyInstance) {
 	});
 
 	app.get("/", async (request: FastifyRequest, reply: FastifyReply) => {
-		return getStaticFile(reply, "index.html");
+		return reply.sendFile("index.html");
 	});
 
 	app.post("/users", async function createUser(request: FastifyRequest, reply: FastifyReply) {
@@ -54,6 +55,10 @@ export async function setupRoutes(app: FastifyInstance) {
 		}
 
 		reply.status(201).send(newUser);
+	});
+
+	app.get("/usersData", async () => {
+		return usersData;
 	});
 
 	//https://www.fastify.io/docs/latest/Reference/TypeScript/#using-generics
