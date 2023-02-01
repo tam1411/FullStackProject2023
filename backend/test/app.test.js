@@ -5,9 +5,7 @@ import axios from 'axios'
 import {App} from '../src/app'
 import {usersData} from './mockData'
 
-let app = App({
-    logger: false
-});
+let app = buildApp
 
 test('with HTTP injection', async () => {
     const response = await app.inject({
