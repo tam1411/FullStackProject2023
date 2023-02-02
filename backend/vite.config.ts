@@ -1,27 +1,25 @@
 // @ts-nocheck
-import type {  } from 'vitest/config';
-import { VitePluginNode } from 'vite-plugin-node'
-import * as path from 'path'
+import * as path from "path";
+import {loadEnv} from "vite";
+import {VitePluginNode} from "vite-plugin-node";
+import {configDefaults, defineConfig, UserConfig as VitestUserConfigInterface} from "vitest/config";
 import {getDirName} from "./src/lib/helpers";
-import { loadEnv } from 'vite';
-import { configDefaults, defineConfig, UserConfig as VitestUserConfigInterface } from 'vitest/config'
 
 // Gets us fancy typing/intellisense during dev
 const vitestConfig: VitestUserConfigInterface = {
 	test: {
 		globals: true,
-		exclude: [...configDefaults.exclude, 'packages/template/*'],
-		reporters: 'verbose',
+		exclude: [...configDefaults.exclude, "packages/template/*"],
+		reporters: "verbose",
 		include: ["./test/**/*.{test,spec}.{ts,mts,cts,tsx}"],
-		includeSource: ['src/**/*.ts', 'src/']
-	}
+		includeSource: ["src/**/*.ts", "src/"],
+	},
 };
 
 // our .env file isn't loaded until AFTER this config, so if we want to use it
 // we need to use a loadEnv helper.
 // https://vitejs.dev/config/#environment-variables
-const env = loadEnv('development', process.cwd(), '');
-
+const env = loadEnv("development", process.cwd(), "");
 
 export default defineConfig({
 	test: vitestConfig.test,
@@ -30,7 +28,7 @@ export default defineConfig({
 	build: {
 		emptyOutDir: true,
 		outDir: "build",
-		target: 'esnext'
+		target: "esnext",
 	},
 	// For html/css/etc files that get copied as-is, rather than compiled, during a build
 	publicDir: "./public",
@@ -41,24 +39,24 @@ export default defineConfig({
 	plugins: [
 		...VitePluginNode({
 			// Nodejs native Request adapter
-			adapter: 'fastify',
+			adapter: "fastify",
 
 			// tell the plugin where is your project entry
-			appPath: './src/server.ts',
+			appPath: "./src/server.ts",
 
 			// Optional, default: 'viteNodeApp'
 			// the name of named export of you app from the appPath file
 			// this has to match the last line in src/server.ts where we export our final app
-			exportName: 'doggr',
+			exportName: "doggr",
 
 			// Optional, default: 'esbuild'
 			// Casey - I'm using swc because it's Rust based
-			tsCompiler: 'swc'
-		})
+			tsCompiler: "swc",
+		}),
 	],
 	resolve: {
 		alias: {
-			'@': path.resolve(getDirName(import.meta), './src')
-		}
-	}
-})
+			"@": path.resolve(getDirName(import.meta), "./src"),
+		},
+	},
+});

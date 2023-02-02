@@ -4,7 +4,10 @@
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="ViteConfiguration">
-    <option name="mode" value="MANUAL" />
+    <option name="mode" value="AUTO" />
     <option name="path" value="$PROJECT_DIR$/backend/vite.config.ts" />
+  </component>
+  <component name="WebPackConfiguration">
+    <option name="mode" value="DISABLED" />
   </component>
 </project>

@@ -7,10 +7,11 @@ interface ImportMetaEnv {
 	readonly VITE_APP_TITLE: string;
 	readonly VITE_IP_ADDR: string;
 	readonly VITE_PORT: number;
+	readonly VITE_LOGS_DIR: string;
 }
 
 interface ImportMeta {
-	readonly env: ImportMetaEnv
-	readonly vitest: Vitest
+	readonly env: ImportMetaEnv;
+	readonly vitest: Vitest;
 
 }
