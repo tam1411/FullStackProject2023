@@ -7,6 +7,7 @@ import {getDirName} from "./lib/helpers";
 import logger from "./lib/logger";
 import {doggr_routes} from "./routes";
 
+// This is our main "Create App" function.  Note that it does NOT start the server, this only creates it
 export async function buildApp(useLogging: boolean = true) {
 	// enables fancy logs and disabling them during tests
 	const app = useLogging ?
@@ -30,21 +31,26 @@ export async function buildApp(useLogging: boolean = true) {
 	return app;
 }
 
-// lookie, now we have top level await!
-const app = await buildApp();
-
-try {
-	void await app.listen({ // Config object is optional and defaults to { host: 'localhost', port: 3000 }
-		host: import.meta.env["VITE_IP_ADDR"],
-		port: Number(import.meta.env["VITE_PORT"]),
-	}, (err) => {  // Listen handler doesn't need to do much except report errors!
-		if (err) {
-			app.log.error(err);
-		}
-	});
-} catch (err) { // This will catch any errors that further bubble up from listen(), should be unnecessary
-	app.log.error(err);
+// Takes a created app and starts it listening on given port
+async function listen(app: any) {
+	try {
+		void await app.listen({ // Config object is optional and defaults to { host: 'localhost', port: 3000 }
+			host: import.meta.env["VITE_IP_ADDR"],
+			port: Number(import.meta.env["VITE_PORT"]),
+		}, (err: any) => {  // Listen handler doesn't need to do much except report errors!
+			if (err) {
+				app.log.error(err);
+			}
+		});
+	} catch (err) { // This will catch any errors that further bubble up from listen(), should be unnecessary
+		app.log.error(err);
+	}
 }
 
-// doggr here matches with vite.config.js::exportName
+// actually call the above Create App function
+const app = await buildApp();
+// Make our new app start listening
+void await listen(app);
+
+// boilerplate - doggr here matches with vite.config.js::exportName
 export const doggr = app;
