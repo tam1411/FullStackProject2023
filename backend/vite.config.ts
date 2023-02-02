@@ -1,12 +1,12 @@
 // @ts-nocheck
-import type { UserConfig as VitestUserConfigInterface } from 'vitest/config';
+import type {  } from 'vitest/config';
 import { VitePluginNode } from 'vite-plugin-node'
 import * as path from 'path'
 import {getDirName} from "./src/lib/helpers";
+import { loadEnv } from 'vite';
+import { configDefaults, defineConfig, UserConfig as VitestUserConfigInterface } from 'vitest/config'
 
-import { configDefaults, defineConfig } from 'vitest/config'
-
-
+// Gets us fancy typing/intellisense during dev
 const vitestConfig: VitestUserConfigInterface = {
 	test: {
 		globals: true,
@@ -17,25 +17,30 @@ const vitestConfig: VitestUserConfigInterface = {
 	}
 };
 
+// our .env file isn't loaded until AFTER this config, so if we want to use it
+// we need to use a loadEnv helper.
+// https://vitejs.dev/config/#environment-variables
+const env = loadEnv('development', process.cwd(), '');
+
 
 export default defineConfig({
 	test: vitestConfig.test,
+	// Keeps track of which tests have failed on prior run, then executes them first on the next run
 	cache: true,
 	build: {
 		emptyOutDir: true,
 		outDir: "build",
 		target: 'esnext'
 	},
+	// For html/css/etc files that get copied as-is, rather than compiled, during a build
 	publicDir: "./public",
 	server: {
 		// vite server configs, for details see [vite doc](https://vitejs.dev/config/#server-host)
-		port: 8080
+		port: env.VITE_PORT,
 	},
 	plugins: [
 		...VitePluginNode({
 			// Nodejs native Request adapter
-			// currently this plugin support 'express', 'nest', 'koa' and 'fastify' out of box,
-			// you can also pass a function if you are using other frameworks, see Custom Adapter section
 			adapter: 'fastify',
 
 			// tell the plugin where is your project entry
@@ -43,14 +48,12 @@ export default defineConfig({
 
 			// Optional, default: 'viteNodeApp'
 			// the name of named export of you app from the appPath file
+			// this has to match the last line in src/server.ts where we export our final app
 			exportName: 'doggr',
 
 			// Optional, default: 'esbuild'
-			// The TypeScript compiler you want to use
-			// by default this plugin is using vite default ts compiler which is esbuild
-			// 'swc' compiler is supported to use as well for frameworks
-			// like Nestjs (esbuild dont support 'emitDecoratorMetadata' yet)
-			tsCompiler: 'esbuild'
+			// Casey - I'm using swc because it's Rust based
+			tsCompiler: 'swc'
 		})
 	],
 	resolve: {

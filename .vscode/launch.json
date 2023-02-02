@@ -1,0 +1,15 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Debug Backend",
+			"cwd": "${workspaceFolder}/backend",
+			"request": "launch",
+			"runtimeExecutable": "pnpm",
+			"runtimeArgs": [
+				"debug",
+			],
+			"type": "node"
+		},
+	]
+}

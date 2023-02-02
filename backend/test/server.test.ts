@@ -99,7 +99,7 @@ describe("Route testing", () => {
     expect(response.statusCode)
       .toBe(200);
     expect(response.payload)
-      .toBe(JSON.stringify({ foo: "1", first_name: "Bobinsky", last_name: "Oso"}));
+      .toBe(JSON.stringify({ userID: "1", first_name: "Bobinsky", last_name: "Oso"}));
   });
 });
 

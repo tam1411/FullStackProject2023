@@ -1,10 +1,10 @@
-import cors from "cors";
 import fs from "fs/promises";
 import path from "path";
-import {getDirName} from "./lib/helpers";
-import {FastifyInstance, FastifyReply, FastifyRequest} from "fastify";
+import cors from "cors";
+import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
+import { getDirName } from "./lib/helpers";
 
-import {usersData} from "./lib/mockData";
+import { usersData } from "./lib/mockData";
 
 function areWeTestingWithJest() {
 	return process.env['JEST_WORKER_ID'] !== undefined;
@@ -18,7 +18,8 @@ const filePathPrefix = areWeTestingWithJest()
 	// Not Jest
 	: path.resolve(__dirname, "public");
 
-// async function getStaticFileOld(res, filePath) {
+// Reminder of what we used to have to do
+// async function getStaticFile(res, filePath) {
 //     return fs.readFile(
 //       path.resolve(filePathPrefix, filePath), "utf8")
 //       .catch((err) => {
@@ -28,35 +29,39 @@ const filePathPrefix = areWeTestingWithJest()
 //       });
 // }
 
-async function getStaticFile(reply: FastifyReply, filePath: string) {
-	return fs.readFile(path.resolve(filePathPrefix, filePath), "utf8");
-}
-
-
 export async function doggr_routes(app: FastifyInstance) {
-
+	// Add CORS middleware
+	// TODO: Refactor this in favor of fastify-cors
 	app.use(cors());
 
-	//READ THIS LINK FOR EASY TO MISS SNAGS
-	//https://www.fastify.io/docs/latest/Reference/Routes/#async-await
+	// READ THIS LINK FOR EASY TO MISS SNAGS
+	// https://www.fastify.io/docs/latest/Reference/Routes/#async-await
+	// SERIOUSLY, REALLY READ IT
 	app.get("/about", async (req: FastifyRequest, res: FastifyReply) => {
 		return "about:GET";
 	});
 
+	// Directly returns index.html file
 	app.get("/", async (request: FastifyRequest, reply: FastifyReply) => {
 		return reply.status(200).sendFile("index.html");
 	});
 
+	// This expects a POST request with JSON payload like: const payload = { newUser: "tom" };
 	app.post("/users", async function createUser(request: FastifyRequest, reply: FastifyReply) {
 		const newUser = request.body;
 
 		if (!newUser) {
+			// Fastify handles errors for us nicely!
 			throw new Error("Error creating user");
 		}
 
 		reply.status(201).send(newUser);
 	});
 
+	// Note that Fastify doesn't require you to res.send() or res.json() or res.end() or anything like that
+	// It's all handled for you!
+	// https://www.fastify.io/docs/latest/Reply/
+	// https://www.fastify.io/docs/latest/Reply/#send
 	app.get("/usersData", async () => {
 		return usersData;
 	});
@@ -68,11 +73,12 @@ export async function doggr_routes(app: FastifyInstance) {
 
 	//https://www.fastify.io/docs/latest/Reference/Request/
 	app.get<{ Params: UserIDQueryParams }>("/users/:userID", async (request, reply) => {
-		const {userID} = request.params;
+		const { userID } = request.params;
 		const user = {
-			//foo: userID
+			// also valid
+			//foo: request.params['userID']
 			//foo: request.params.userID
-			foo: request.params['userID'],
+			userID,
 			first_name: "Bobinsky",
 			last_name: "Oso",
 		};
@@ -80,6 +86,7 @@ export async function doggr_routes(app: FastifyInstance) {
 		return user;
 	})
 
+	// This replaces our old app.use("*") catchall route
 	app.setNotFoundHandler(defaultRoute);
 }
 

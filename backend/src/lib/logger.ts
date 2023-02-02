@@ -7,8 +7,7 @@ if (!fs.existsSync(logDir)) {
 	fs.mkdirSync(logDir, { recursive: true })
 }
 
-// Set logger options
-
+// Set logger options such that dev logs are pretty, and prod logs are warn level saved to file
 const logger = import.meta.env.DEV
 	? {
 		transport: {

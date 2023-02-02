@@ -5,13 +5,24 @@
   "main": "server.ts",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --mode development",
+    "debug": "vite-node src/server.ts",
     "build": "vite build",
     "start": "node build/index.js",
     "lint": "eslint . --ext .ts",
     "test": "vitest --passWithNoTests",
     "test:ui": "vitest --ui",
     "test:once": "vitest run"
+  },
+  "scriptsComments": {
+    "dev": "Starts the development server using vite-plugin-node for rapid iteration.",
+    "debug": "Starts the development server with vite-node for attaching a debugger",
+    "build": "Builds the app for production.",
+    "start": "Runs the built app in production mode.",
+    "lint": "Lints the project.",
+    "test": "Runs the test suite.",
+    "test:ui": "Runs the test suite in the browser.",
+    "test:once": "Runs the test suite once."
   },
   "keywords": [],
   "author": "",
@@ -26,6 +37,8 @@
     "pino": "^8.8.0"
   },
   "devDependencies": {
+    "@swc/cli": "^0.1.60",
+    "@swc/core": "^1.3.32",
     "@types/cors": "^2.8.13",
     "@types/node": "^18.11.18",
     "@types/supertest": "^2.0.12",
@@ -40,6 +53,7 @@
     "supertest": "^6.3.3",
     "typescript": "^4.9.4",
     "vite": "^4.0.4",
+    "vite-node": "^0.28.3",
     "vite-plugin-node": "^3.0.2",
     "vitest": "^0.28.3"
   }

@@ -9,17 +9,21 @@ import {getDirName} from "./lib/helpers";
 import logger from "./lib/logger";
 
 export async function buildApp(enableLogging: boolean) {
+	// enables fancy logs
 	const app = Fastify({
 		logger,
 	});
 
+	// add express-like 'app.use' middleware support
 	await app.register(fastifyMiddie);
 
+	// add static file handling
 	await app.register(staticFiles, {
 		root: path.join(getDirName(import.meta), '../public'),
 		prefix: '/public/',
 	});
 
+	// Adds all of our Router's routes to the app
 	await app.register(doggr_routes);
 
 	return app;
@@ -41,4 +45,5 @@ try {
 	app.log.error(err);
 }
 
+// doggr here matches with vite.config.js::exportName
 export const doggr = app;
