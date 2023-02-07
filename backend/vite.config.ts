@@ -28,7 +28,7 @@ export default defineConfig({
 	build: {
 		emptyOutDir: true,
 		outDir: "build",
-		target: "esnext",
+		target: "modules",
 	},
 	// For html/css/etc files that get copied as-is, rather than compiled, during a build
 	publicDir: "./public",

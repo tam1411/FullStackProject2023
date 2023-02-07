@@ -7,6 +7,7 @@ import {getDirName} from "./lib/helpers";
 import logger from "./lib/logger";
 import {doggr_routes} from "./routes";
 
+
 // This is our main "Create App" function.  Note that it does NOT start the server, this only creates it
 export async function buildApp(useLogging: boolean = true) {
 	// enables fancy logs and disabling them during tests
