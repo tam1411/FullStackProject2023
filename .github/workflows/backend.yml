@@ -34,5 +34,5 @@ jobs:
         run: pnpm install
 
       - name: Run tests
-        run: pnpm test:once
+        run: pnpm test
 

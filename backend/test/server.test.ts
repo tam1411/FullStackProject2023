@@ -9,7 +9,7 @@ let app;
 
 // called once before all tests run, used to prepare server for tests
 beforeAll(async () => {
-	app = await buildApp(false);
+	app = await buildApp(false, true);
 	await app.ready();
 });
 
