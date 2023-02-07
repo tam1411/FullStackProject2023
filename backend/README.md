@@ -5,3 +5,8 @@ Local:
 Docker:
 > docker build -t doggr/backend .
 > docker run -p 8080:8080 doggr/backend
+
+Docker-Compose:
+From root (not /backend)
+> docker-compose up
+
