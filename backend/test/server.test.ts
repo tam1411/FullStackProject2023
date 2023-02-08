@@ -9,12 +9,16 @@ let app;
 
 // called once before all tests run, used to prepare server for tests
 beforeAll(async () => {
-	app = await buildApp(false, true);
+	// Build our app ONLY -- no listening
+	app = await buildApp(true);
+	// https://www.fastify.io/docs/latest/Reference/Server/#ready
+	// This does everything BUT listen -- all of Fastify's internal setup
 	await app.ready();
 });
 
 // Called once after all tests finish, used for cleanup
 afterAll(async () => {
+	// Notify fastify it can clean itself up
 	await app.close();
 });
 

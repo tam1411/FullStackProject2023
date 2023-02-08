@@ -13,6 +13,9 @@ const vitestConfig: VitestUserConfigInterface = {
 		reporters: "verbose",
 		include: ["./test/**/*.{test,spec}.{ts,mts,cts,tsx}"],
 		includeSource: ["src/**/*.ts", "src/"],
+		onConsoleLog(log, type) {
+			return true;
+		}
 	},
 };
 
@@ -42,7 +45,7 @@ export default defineConfig({
 			adapter: "fastify",
 
 			// tell the plugin where is your project entry
-			appPath: "./src/server.ts",
+			appPath: "./src/index.ts",
 
 			// Optional, default: 'viteNodeApp'
 			// the name of named export of you app from the appPath file

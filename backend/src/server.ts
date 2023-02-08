@@ -10,8 +10,7 @@ import {doggr_routes} from "./routes";
 
 
 // This is our main "Create App" function.  Note that it does NOT start the server, this only creates it
-// isTesting means we do NOT need to connect to mongo at all!
-export async function buildApp(useLogging: boolean = true, isTesting = false) {
+export async function buildApp(useLogging: boolean) {
 	// enables fancy logs and disabling them during tests
 	const app = useLogging ?
 		Fastify({
@@ -31,10 +30,14 @@ export async function buildApp(useLogging: boolean = true, isTesting = false) {
 	// Adds all of our Router's routes to the app
 	await app.register(doggr_routes);
 
-	if (!isTesting) {
+	// VITEST sets this MODE env var to "test" when testing, so we bail on database
+	if (import.meta.env.MODE !== "test") {
 		try {
-			const mongoHost = import.meta.env['VITE_MONGO_HOST'];
-			await mongoose.connect(`mongodb://${mongoHost}:27017`);
+			app.log.info("Connecting to mongodb...");
+			// IMPORTANT - read Production Replacement here: https://vitejs.dev/guide/env-and-mode.html
+			// Yes, Javascript REALLY IS this annoying
+			const mongoHost = import.meta.env.VITE_MONGO_HOST;
+			await mongoose.connect(`mongodb://${mongoHost}:27017`,);
 			app.log.info("MongoDB connected...");
 		} catch (err) {
 			app.log.error(err);
@@ -45,11 +48,11 @@ export async function buildApp(useLogging: boolean = true, isTesting = false) {
 }
 
 // Takes a created app and starts it listening on given port
-async function listen(app: any) {
+export async function listen(app: any) {
 	try {
 		void await app.listen({ // Config object is optional and defaults to { host: 'localhost', port: 3000 }
-			host: import.meta.env["VITE_IP_ADDR"],
-			port: Number(import.meta.env["VITE_PORT"]),
+			host: import.meta.env.VITE_IP_ADDR,
+			port: Number(import.meta.env.VITE_PORT),
 		}, (err: any) => {  // Listen handler doesn't need to do much except report errors!
 			if (err) {
 				app.log.error(err);
@@ -60,10 +63,5 @@ async function listen(app: any) {
 	}
 }
 
-// actually call the above Create App function
-const app = await buildApp();
-// Make our new app start listening
-void await listen(app);
 
-// boilerplate - doggr here matches with vite.config.js::exportName
-export const doggr = app;
+
