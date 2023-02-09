@@ -6,6 +6,7 @@ import path from "path";
 import {getDirName} from "./lib/helpers";
 import logger from "./lib/logger";
 import {doggr_routes} from "./routes";
+import DbPlugin from "./plugins/database";
 
 
 // This is our main "Create App" function.  Note that it does NOT start the server, this only creates it
@@ -31,16 +32,16 @@ export async function buildApp(useLogging: boolean) {
 
 	// VITEST sets this MODE env var to "test" when testing, so we bail on database
 	if (import.meta.env.MODE !== "test") {
-		// try {
-		// 	app.log.info("Connecting to Database...");
-		// 	// IMPORTANT - read Production Replacement here: https://vitejs.dev/guide/env-and-mode.html
-		// 	// Yes, Javascript REALLY IS this annoying
-		// 	const mongoHost = import.meta.env.VITE_MONGO_HOST;
-		// 	await mongoose.connect(`mongodb://${mongoHost}:27017`,);
-		// 	app.log.info("DB connected...");
-		// } catch (err) {
-		// 	app.log.error(err);
-		// }
+		try {
+			app.log.info("Connecting to Database...");
+			// IMPORTANT - read Production Replacement here: https://vitejs.dev/guide/env-and-mode.html
+			// Yes, Javascript REALLY IS this annoying
+			await app.register(DbPlugin);
+
+			app.log.info("DB connected...");
+		} catch (err) {
+			app.log.error(err);
+		}
 	}
 
 	return app;

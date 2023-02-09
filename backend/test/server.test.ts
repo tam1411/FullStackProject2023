@@ -1,7 +1,6 @@
 // @ts-ignore - supertest is not a module, it's a global
 import supertest from "supertest";
 import {afterAll, beforeAll, describe, expect, it} from "vitest";
-import {usersData} from "../src/lib/mockData";
 import {buildApp} from "../src/server";
 
 // This is the app we'll use for testing, created at file-level scope

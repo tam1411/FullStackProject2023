@@ -1,4 +1,4 @@
-// actually call the above Create App function
+import "reflect-metadata";
 import {buildApp, listen} from "./server";
 
 const app = await buildApp(true);
