@@ -15,9 +15,6 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": [
-    "@typescript-eslint"
-  ],
   "rules": {
     // This is so that we can use promisify on Node's http methods
     "default-param-last": "off",
@@ -30,8 +27,13 @@
       }
     ],
     "indent": [
-      "warn",
-      2
+      "error",
+      "tab",
+      {
+        "ignoredNodes": [
+          "PropertyDefinition"
+        ]
+      }
     ],
     "no-mixed-spaces-and-tabs": "error",
     "semi": "error",
@@ -78,6 +80,7 @@
     "@typescript-eslint/no-implicit-any": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "import/no-extraneous-dependencies": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
     "no-return-await": "error"
   }
 }
