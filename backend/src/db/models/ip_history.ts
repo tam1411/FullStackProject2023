@@ -1,5 +1,6 @@
-import {BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
-import User from "./user";
+import {BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, Relation} from "typeorm";
+// @ts-ignore
+import User from "./user.ts";
 
 @Entity()
 export class IPHistory extends BaseEntity {
@@ -9,13 +10,13 @@ export class IPHistory extends BaseEntity {
 	@Column("text")
 	ip: string;
 
-	@ManyToOne((type) => User, (user) => user.ips, {
+	@ManyToOne((type) => User, (user: User) => user.ips, {
 		//adding an IPHistory will also add associated User if it is new, somewhat useless in this example
 		cascade: true,
 		// if we delete a User, also delete their IP History
 		onDelete: "CASCADE"
 	})
-	user: User;
+	user: Relation<User>;
 
 	@CreateDateColumn()
 	created_at: string;

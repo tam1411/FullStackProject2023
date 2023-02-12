@@ -16,8 +16,8 @@ export async function doggr_routes(app: FastifyInstance) {
 		reply.send("GET Index");
 	});
 
-// CRUD impl for users
-// Create new user
+	// CRUD impl for users
+	// Create new user 
 
 	app.post("/users", async (req, res) => {
 		const user = new User();

@@ -5,9 +5,12 @@ import {
 	Entity,
 	OneToMany,
 	PrimaryGeneratedColumn,
+	Relation,
 	UpdateDateColumn
 } from "typeorm";
-import {IPHistory} from "./ip_history";
+
+// @ts-ignore
+import {IPHistory} from "./ip_history.ts";
 
 @Entity()
 export default class User extends BaseEntity {
@@ -23,8 +26,8 @@ export default class User extends BaseEntity {
 	@Column('text')
 	email: string;
 
-	@OneToMany((type) => IPHistory, (ip) => ip.user)
-	ips: IPHistory[];
+	@OneToMany((type) => IPHistory, (ip: IPHistory) => ip.user)
+	ips: Relation<IPHistory[]>;
 
 	@CreateDateColumn()
 	created_at: string;

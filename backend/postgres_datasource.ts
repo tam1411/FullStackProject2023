@@ -1,16 +1,25 @@
-import { DataSource } from 'typeorm';
-import User from "./src/db/models/user";
-import {IPHistory} from "./src/db/models/ip_history";
+import dotenv from "dotenv";
+import {DataSource} from 'typeorm';
+// https://github.com/microsoft/TypeScript/pull/52230 bug why we have to ts-ignore these
+// @ts-ignore
+import User from "./src/db/models/user.ts";
+// @ts-ignore
+import {IPHistory} from "./src/db/models/ip_history.ts";
+// @ts-ignore
+import {UserCreation1676207964272} from "./src/db/migrations/1676207964272-UserCreation.ts";
+
+dotenv.config();
+
 //npm run typeorm migration:run -- -d ./data-source-default.ts
 
 // @ts-ignore
-const env: ImportMetaEnv = import.meta.env;
+const env = process.env;
 
-const PostgresDatasource =   new DataSource(
+export const AppDataSource = new DataSource(
 	{
 		type: "postgres",
 		host: env.VITE_DB_HOST,
-		port: env.VITE_DB_PORT,
+		port: Number(env.VITE_DB_PORT),
 		username: env.VITE_DB_USER,
 		password: env.VITE_DB_PASS,
 		database: env.VITE_DB_NAME,
@@ -20,10 +29,8 @@ const PostgresDatasource =   new DataSource(
 			IPHistory
 		],
 		migrations: [
-			"src/db/migrations/*.ts"
+			UserCreation1676207964272
 		],
 		synchronize: true,
 	}
 );
-
-export { PostgresDatasource };
