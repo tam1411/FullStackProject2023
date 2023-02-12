@@ -5,7 +5,7 @@ import {DataSource, Repository} from "typeorm";
 import User from "../db/models/user";
 import {IPHistory} from "../db/models/ip_history";
 import {FastifyInstance, FastifyPluginOptions} from "fastify";
-
+import { PostgresDatasource } from "../db/datasources/postgres_datasource";
 
 // This is AWESOME - we're telling typescript we're adding our own "thing" to base 'app', so we get FULL IDE/TS support
 declare module 'fastify' {
@@ -33,24 +33,12 @@ const DbPlugin = fp(async (app: FastifyInstance, options: FastifyPluginOptions, 
 	//try {
 
 	const env = import.meta.env;
-	const dataSourceConnection = new DataSource(
-		{
-			type: "postgres",
-			host: env.VITE_DB_HOST,
-			port: env.VITE_DB_PORT,
-			username: env.VITE_DB_USER,
-			password: env.VITE_DB_PASS,
-			database: env.VITE_DB_NAME,
-			// entities are used to tell TypeORM which tables to create in the database
-			entities: [
-				User,
-				IPHistory
-			],
-			synchronize: true,
-		}
-	);
+	const dataSourceConnection = PostgresDatasource;
 
 	await dataSourceConnection.initialize();
+	let results = await dataSourceConnection.getRepository(User).find();
+	app.log.warn("Found user count: " + results.length);
+
 
 	// this object will be accessible from any fastify server instance
 	// app.status(200).send()
