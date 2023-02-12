@@ -12,16 +12,10 @@
     "test": "vitest run --passWithNoTests",
     "test:ui": "vitest --ui",
     "test:watch": "vitest --passWithNoTests",
-    "typeorm": "typeorm-ts-node-esm",
-    "typeorm:run-migrations": "pnpm typeorm-ts-node-esm migration:run -d ./postgres_datasource.ts",
-    "migration:create": "cd src/db/migrations && npx typeorm-ts-node-esm migration:create",
-    "migration:generate": "cd src/db/migrations && npx typeorm-ts-node-esm migration:generate -d ../postgres_datasource.ts",
-    "migration:run": "cd src/db/migrations && npx typeorm-ts-node-esm migration:run -d ../postgres_datasource.ts",
-    "prepare-migration-datasource": "esbuild src/db/postgres_datasource.ts --external:'pg-native' --platform=node --format=esm --bundle --log-level=warning --outfile=src/db/_dataSource.js",
-    "create-migration": "typeorm migration:create src/db/migrations/$npm_config_name",
-    "generate-migration": "npm run prepare-migration-datasource && typeorm migration:generate -d src/db/migrations/_dataSource.js src/db/migrations/$npm_config_name",
-    "run-migrations": "npm run prepare-migration-datasource && typeorm migration:run -d src/db/_dataSource.js",
-    "revert-migration": "npm run prepare-migration-datasource && typeorm migration:revert -d src/db/_dataSource.js"
+    "migration:run": "pnpm typeorm-ts-node-esm migration:run -d ./postgres_datasource.ts",
+    "migration:create": "pnpm typeorm-ts-node-esm migration:create",
+    "migration:generate": "pnpm typeorm-ts-node-esm migration:generate -d ./postgres_datasource.ts",
+    "migration:revert": "pnpm typeorm-ts-node-esm migration:revert -d ./postgres_datasource.ts"
   },
   "scriptsComments": {
     "dev": "Starts the development server using vite-plugin-node for rapid iteration.",
@@ -30,7 +24,11 @@
     "lint": "Lints the project.",
     "test": "Runs the test suite.",
     "test:ui": "Runs the test suite in the browser.",
-    "test:once": "Runs the test suite once."
+    "test:once": "Runs the test suite once.",
+    "migration:run": "Runs all pending migrations",
+    "migration:create": "Creates new migration for manual entry, used like > pnpm migration:create ./src/db/migrations/MyNewMigrationName",
+    "migrations:generate": "Auto-generates a new migration based on any entity changes you made to your JS files, used like > pnpm migration:generate ./src/db/migrations/IpHistoryAddMethod",
+    "migration:revert": "Undoes the most recent migration, can be called multiple times in a row"
   },
   "keywords": [],
   "author": "",
