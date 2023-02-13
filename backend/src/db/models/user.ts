@@ -12,7 +12,7 @@ import {
 // @ts-ignore
 import {IPHistory} from "./ip_history.ts";
 
-@Entity()
+@Entity({name: "users"})
 export default class User extends BaseEntity {
 	@PrimaryGeneratedColumn()
 	id: number;
@@ -35,6 +35,3 @@ export default class User extends BaseEntity {
 	@UpdateDateColumn()
 	updated_at: string;
 }
-
-// let fooUser = new User();
-// fooUser.name fooUser.email

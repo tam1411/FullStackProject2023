@@ -10,7 +10,7 @@ import DbPlugin from "./plugins/database";
 
 
 // This is our main "Create App" function.  Note that it does NOT start the server, this only creates it
-export async function buildApp(useLogging: boolean) {
+export async function buildApp(useLogging: boolean, useDatabase: boolean = true) {
 	// enables fancy logs and disabling them during tests
 	const app = useLogging ?
 		Fastify({
@@ -31,7 +31,7 @@ export async function buildApp(useLogging: boolean) {
 	await app.register(doggr_routes);
 
 	// VITEST sets this MODE env var to "test" when testing, so we bail on database
-	if (import.meta.env.MODE !== "test") {
+	if (import.meta.env.MODE !== "test" && useDatabase) {
 		try {
 			app.log.info("Connecting to Database...");
 			// IMPORTANT - read Production Replacement here: https://vitejs.dev/guide/env-and-mode.html

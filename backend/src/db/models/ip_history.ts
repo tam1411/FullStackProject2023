@@ -10,9 +10,6 @@ export class IPHistory extends BaseEntity {
 	@Column("text")
 	ip: string;
 
-	@Column("text")
-	method: string;
-
 	@ManyToOne((type) => User, (user: User) => user.ips, {
 		//adding an IPHistory will also add associated User if it is new, somewhat useless in this example
 		cascade: true,
