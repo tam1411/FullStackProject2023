@@ -1,4 +1,4 @@
-// src/plugins/db.ts
+/** @module DatabasePlugin */
 import "reflect-metadata";
 import fp from "fastify-plugin";
 import {DataSource, Repository} from "typeorm";
@@ -7,7 +7,7 @@ import {IPHistory} from "../db/models/ip_history";
 import {FastifyInstance, FastifyPluginOptions} from "fastify";
 import {AppDataSource} from "../db/datasources/dev_datasource";
 
-/** @module DatabasePlugin */
+
 
 /** This is AWESOME - we're telling typescript we're adding our own "thing" to base 'app', so we get FULL IDE/TS support */
 declare module 'fastify' {
@@ -30,6 +30,10 @@ interface DBConfigOpts {
 	connection: DataSource,
 }
 
+/**
+ * Connects and decorates fastify with our Database connection
+ * @function
+ */
 const DbPlugin = fp(async (app: FastifyInstance, options: FastifyPluginOptions, done: any) => {
 
 	const dataSourceConnection = AppDataSource;

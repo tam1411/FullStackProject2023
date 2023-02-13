@@ -1,13 +1,20 @@
+/** @module Seeds/User */
 import {User} from "../models/user";
 import {Seeder} from "../../lib/seed_manager";
 import {FastifyInstance} from "fastify";
 
-/** @module UserSeeder */
+
 
 /**
  * UserSeeder class - Model class for interacting with "users" table
  */
-class UserSeeder extends Seeder {
+export class UserSeeder extends Seeder {
+	/**
+	 * Runs the IPHistory table's seed
+	 * @function
+	 * @param {FastifyInstance} app
+	 * @returns {Promise<void>}
+	 */
 	override async run(app: FastifyInstance) {
 		app.log.info("Seeding Users...");
 		// clear out whatever's already there
@@ -26,5 +33,5 @@ class UserSeeder extends Seeder {
 }
 
 // generate default instance for convenience
-const UserSeed = new UserSeeder();
-export default UserSeed;
+export const UserSeed = new UserSeeder();
+

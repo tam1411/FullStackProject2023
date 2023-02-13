@@ -1,9 +1,8 @@
+/** @module Routes */
 import cors from "cors";
 import {FastifyInstance, FastifyReply, FastifyRequest, RouteShorthandOptions} from "fastify";
 import {User} from "./db/models/user";
 import {IPHistory} from "./db/models/ip_history";
-
-/** @module Routes */
 
 /**
  * App plugin where we construct our routes
@@ -99,10 +98,7 @@ interface IPostUsersBody {
 }
 
 /**
- * @typedef {object} IPostUsersResponse
- * @module Routes
- * @property {User} IPostUsersResponse.user
- * @property {string} IPostUsersResponse.ip_address
+ * Response type for post/users
  */
 export type IPostUsersResponse = {
 	/**

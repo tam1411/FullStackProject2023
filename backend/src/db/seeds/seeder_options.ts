@@ -1,7 +1,8 @@
-import UserSeed from "./user_seeder";
-import IPHistorySeed from "./ip_history_seeder";
+/** @module SeedManager */
+import {UserSeed} from "./user_seeder";
+import {IPHistorySeed} from "./ip_history_seeder";
 
-/** @module SeederOptions */
+
 
 /**
  * Options bag for configuring which seeds to run during `pnpm migrate:run`

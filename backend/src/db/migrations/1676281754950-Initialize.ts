@@ -1,6 +1,6 @@
-import {MigrationInterface, QueryRunner} from "typeorm";
+/** @module Migrate/Init */
 
-/** @module Migrations */
+import {MigrationInterface, QueryRunner} from "typeorm";
 
 /**
  * This migration sets up our initial database state
@@ -8,6 +8,9 @@ import {MigrationInterface, QueryRunner} from "typeorm";
 export class Initialize1676281754950 implements MigrationInterface {
 	name = 'Initialize1676281754950';
 
+	/**
+	 * Creates initial tables
+	 */
 	public async up(queryRunner: QueryRunner): Promise<void> {
 		await queryRunner.query(`CREATE TABLE "ip_history"
                              (
@@ -30,6 +33,11 @@ export class Initialize1676281754950 implements MigrationInterface {
         ADD CONSTRAINT "FK_b3658d04b80507751b273bf038b" FOREIGN KEY ("userId") REFERENCES "users" ("id") ON DELETE CASCADE ON UPDATE NO ACTION`);
 	}
 
+	/**
+	 * Deletes initial tables
+	 * @param {} queryRunner
+	 * @returns {Promise<void>}
+	 */
 	public async down(queryRunner: QueryRunner): Promise<void> {
 		await queryRunner.query(`ALTER TABLE "ip_history" DROP CONSTRAINT "FK_b3658d04b80507751b273bf038b"`);
 		await queryRunner.query(`DROP TABLE "users"`);

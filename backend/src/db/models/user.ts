@@ -1,3 +1,4 @@
+/** @module Models/User */
 import {
 	BaseEntity,
 	Column,
@@ -12,16 +13,10 @@ import {
 // @ts-ignore
 import {IPHistory} from "./ip_history.ts";
 
-/** @module UserModel */
-
-@Entity({name: "users"})
 /**
  *  Class representing user table
-
- *  @property {number} id user ID field
- *  @property {string} name user name field
- *  @property {string} email user Email field
  */
+@Entity({name: "users"})
 export class User extends BaseEntity {
 	@PrimaryGeneratedColumn()
 	id: number;

@@ -1,4 +1,4 @@
-// noinspection ES6MissingAwait
+/** @module Server */
 
 // This will let us use our basic middlewares now, then transition to hooks later
 import fastifyMiddie from "@fastify/middie";
@@ -10,14 +10,13 @@ import logger from "./lib/logger";
 import {doggr_routes} from "./routes";
 import DbPlugin from "./plugins/database";
 
-/** @module Server */
+
 
 /**
  * This is our main "Create App" function.  Note that it does NOT start the server, this only creates it
- *
+ * @function
  * @param useLogging Whether to log or not
- *
- * @return  FastifyInstance
+ * @return  Promise<FastifyInstance>
  */
 export async function buildApp(useLogging: boolean) {
 	const app = useLogging ?
@@ -58,7 +57,6 @@ export async function buildApp(useLogging: boolean) {
  * This is what actively starts the server listening on a port
  *
  * @param app: FastifyInstance main server instance created in buildApp()
- *
  * @return  Promise<void> When server closes
  */
 export async function listen(app: FastifyInstance) {

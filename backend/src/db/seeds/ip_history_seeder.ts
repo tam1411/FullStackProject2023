@@ -1,16 +1,22 @@
+/** @module Seeds/IPHistory */
+
 import {faker} from "@faker-js/faker";
 import {Seeder} from "../../lib/seed_manager";
 import {IPHistory} from "../models/ip_history";
 import {User} from "../models/user";
 import {FastifyInstance} from "fastify";
 
-/** @module IPHistorySeeder */
-
 /**
  * Seeds the ip_history table
  */
-class IPHistorySeeder extends Seeder {
+export class IPHistorySeeder extends Seeder {
 
+	/**
+	 * Runs the IPHistory table's seed
+	 * @function
+	 * @param {FastifyInstance} app
+	 * @returns {Promise<void>}
+	 */
 	override async run(app: FastifyInstance) {
 		app.log.info("Seeding IP Histories...");
 		// Remove everything in there currently
@@ -32,6 +38,6 @@ class IPHistorySeeder extends Seeder {
 	}
 }
 
-// generate default instance for convenience
-const IPHistorySeed = new IPHistorySeeder();
-export default IPHistorySeed;
+export const IPHistorySeed = new IPHistorySeeder();
+
+

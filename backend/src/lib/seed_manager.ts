@@ -1,17 +1,31 @@
+/** @module SeedManager */
 import {FastifyInstance} from "fastify";
-
-/** @module Seeder */
 
 export type SeederOptions = {
 	seeds: Array<Seeder>;
 }
 
+/**
+ * Base Abstract Seeder class meant to be implemented by derived seeds
+ */
 export abstract class Seeder {
-	// Note here we do NOT make the abstract async!  No need to force it on our users, though we *can and will* use async
+	/** Abstract run function that performs a Seed action
+	 * Note here we do NOT make the abstract async!  No need to force it on our users, though we *can and will* use async
+	 *
+	 * @param {} app Fastify Instance
+	 * @returns {Promise<void>}
+	 */
 	abstract run(app: FastifyInstance): Promise<void>;
 }
 
+/**
+ * Class that manages all Seeder-related duties.
+ * Right now, simply runs every Seeder's seed sequentially
+ */
 class SeedMgr {
+	/**
+	 * Performs seed on all Seeder files
+	 */
 	async seedAll(app: FastifyInstance, options: SeederOptions) {
 		// Go through every seeder included in our options (See index.ts)
 		for (let i = 0; i < options.seeds.length; i++) {

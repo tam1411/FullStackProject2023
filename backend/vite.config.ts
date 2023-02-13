@@ -35,6 +35,14 @@ export default defineConfig({
 		emptyOutDir: true,
 		outDir: "build",
 		target: "modules",
+		rollupOptions: {
+
+			output: {
+				manualChunks: {
+
+				}
+			}
+		}
 	},
 	// For html/css/etc files that get copied as-is, rather than compiled, during a build
 	publicDir: "./public",

@@ -1,6 +1,5 @@
-import fs from "fs";
-
 /** @module Logger */
+import fs from "fs";
 
 const logDir = import.meta.env["VITE_LOGS_DIR"];
 
@@ -9,8 +8,10 @@ if (!fs.existsSync(logDir)) {
 	fs.mkdirSync(logDir, {recursive: true});
 }
 
-// Set logger options such that dev logs are pretty,
-// and prod logs are warn level saved to file
+/**
+ * Set logger options such that dev logs are pretty,
+ * and prod logs are warn level saved to file
+ */
 const logger = import.meta.env.DEV
 	? {
 		transport: {

@@ -1,12 +1,10 @@
-// noinspection JSUnusedGlobalSymbols
-
 import "reflect-metadata";
 import {buildApp, listen} from "./server";
 import SeedManager from "./lib/seed_manager";
 import SeederOptions from "./db/seeds/seeder_options";
 import {getModeFromArgs, RunMode} from "./lib/helpers";
 
-/** @module Index */
+
 
 /**
  * Constructs Fastify instance
