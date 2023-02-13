@@ -32,7 +32,8 @@
       {
         "ignoredNodes": [
           "PropertyDefinition"
-        ]
+        ],
+        "SwitchCase": 1
       }
     ],
     "no-mixed-spaces-and-tabs": "error",

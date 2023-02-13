@@ -2,11 +2,11 @@ import dotenv from "dotenv";
 import {DataSource} from 'typeorm';
 // https://github.com/microsoft/TypeScript/pull/52230 bug why we have to ts-ignore these
 // @ts-ignore
-import User from "./src/db/models/user.ts";
+import User from "../models/user.ts";
 // @ts-ignore
-import {IPHistory} from "./src/db/models/ip_history.ts";
+import {IPHistory} from "../models/ip_history.ts";
 // @ts-ignore
-import {UserCreation1676207964272} from "./src/db/migrations/1676207964272-UserCreation.ts";
+import {Initialize1676281754950} from "../migrations/1676281754950-Initialize";
 
 dotenv.config();
 
@@ -27,8 +27,9 @@ export const AppDataSource = new DataSource(
 			IPHistory
 		],
 		migrations: [
-			UserCreation1676207964272
+			Initialize1676281754950
 		],
-		synchronize: true,
+		// DANGER DANGER our convenience will nuke production data!
+		synchronize: false,
 	}
 );

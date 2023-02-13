@@ -9,6 +9,19 @@ export function getDirName(meta: ImportMeta) {
 	return dirname(__filename);
 }
 
+export enum RunMode {
+	LISTEN,
+	SEED
+}
+
+export function getModeFromArgs() {
+	if (process.argv[2] === "-seed") {
+		return RunMode.SEED;
+	} else {
+		return RunMode.LISTEN;
+	}
+}
+
 // in-source testing
 if (import.meta.vitest) {
 	const {describe, it, expect} = import.meta.vitest;
@@ -27,3 +40,4 @@ if (import.meta.vitest) {
 		});
 	});
 }
+

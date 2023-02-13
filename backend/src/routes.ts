@@ -1,5 +1,5 @@
 import cors from "cors";
-import {FastifyInstance, FastifyReply, FastifyRequest} from "fastify";
+import {FastifyInstance, FastifyReply, FastifyRequest, RouteShorthandOptions} from "fastify";
 import User from "./db/models/user";
 import {IPHistory} from "./db/models/ip_history";
 
@@ -11,9 +11,9 @@ export async function doggr_routes(app: FastifyInstance) {
 	app.use(cors());
 
 	// Endpoint routes
-	app.get("/", async (request: FastifyRequest, reply: FastifyReply) => {
-		console.log("Getting index");
-		reply.send("GET Index");
+	// Test route to test-testing
+	app.get("/test", async (request: FastifyRequest, reply: FastifyReply) => {
+		reply.send("GET Test");
 	});
 
 	// Get all users
@@ -21,19 +21,63 @@ export async function doggr_routes(app: FastifyInstance) {
 		let users = await app.db.user.find();
 		reply.send(users);
 	});
+
 	// CRUD impl for users
 	// Create new user
 
-	app.post("/users", async (req, res) => {
+	// Appease fastify gods
+	const post_users_opts: RouteShorthandOptions = {
+		schema: {
+			body: {
+				type: 'object',
+				properties: {
+					name: {type: 'string'},
+					email: {type: 'string'}
+				}
+			},
+			response: {
+				200: {
+					type: 'object',
+					properties: {
+						user: {type: 'object'},
+						ip_address: {type: 'string'}
+					}
+				}
+			}
+		}
+	};
+
+	// Appease typescript request gods
+	interface IPostUsersBody {
+		name: string,
+		email: string,
+	}
+
+	// Appease typescript response gods
+	interface IPostUsersResponse {
+		user: User,
+		ip_address: string
+	}
+
+	app.post<{
+		Body: IPostUsersBody,
+		Reply: IPostUsersResponse
+	}>("/users", post_users_opts, async (req, reply: FastifyReply) => {
+
+		const {name, email} = req.body;
+
 		const user = new User();
-		user.name = "Casey Jones";
-		user.email = "email@gmail.com";
+		user.name = name;
+		user.email = email;
 
 		const ip = new IPHistory();
-		ip.ip = "127.0.0.1";
+		ip.ip = req.ip;
 		ip.user = user;
+		// transactional, transitively saves user to users table as well IFF both succeed
 		await ip.save();
 
-		return res.status(200).send(ip);
+		//manually JSON stringify due to fastify bug with validation
+		// https://github.com/fastify/fastify/issues/4017
+		await reply.send(JSON.stringify({user, ip_address: ip.ip}));
 	});
 }
