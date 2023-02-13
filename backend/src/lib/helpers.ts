@@ -1,8 +1,12 @@
 import {dirname} from 'path';
 import {fileURLToPath} from 'url';
 
-// DIY __dirname since it's removed from ES Modules:
-// https://codingbeautydev.com/blog/javascript-dirname-is-not-defined-in-es-module-scope/
+/** @module Helpers */
+
+/**
+ * DIY __dirname since it's removed from ES Modules:
+ * https://codingbeautydev.com/blog/javascript-dirname-is-not-defined-in-es-module-scope/
+ */
 export function getDirName(meta: ImportMeta) {
 	const __filename = fileURLToPath(meta.url);
 
@@ -14,6 +18,10 @@ export enum RunMode {
 	SEED
 }
 
+/**
+ * Gets execution mode from command line args
+ * @returns {RunMode.LISTEN | RunMode.SEED}
+ */
 export function getModeFromArgs() {
 	if (process.argv[2] === "-seed") {
 		return RunMode.SEED;

@@ -1,5 +1,7 @@
 import {FastifyInstance} from "fastify";
 
+/** @module Seeder */
+
 export type SeederOptions = {
 	seeds: Array<Seeder>;
 }

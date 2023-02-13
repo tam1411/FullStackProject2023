@@ -12,8 +12,17 @@ import {
 // @ts-ignore
 import {IPHistory} from "./ip_history.ts";
 
+/** @module UserModel */
+
 @Entity({name: "users"})
-export default class User extends BaseEntity {
+/**
+ *  Class representing user table
+
+ *  @property {number} id user ID field
+ *  @property {string} name user name field
+ *  @property {string} email user Email field
+ */
+export class User extends BaseEntity {
 	@PrimaryGeneratedColumn()
 	id: number;
 

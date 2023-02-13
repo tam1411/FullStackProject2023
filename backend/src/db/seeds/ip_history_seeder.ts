@@ -1,11 +1,13 @@
 import {faker} from "@faker-js/faker";
 import {Seeder} from "../../lib/seed_manager";
 import {IPHistory} from "../models/ip_history";
-import User from "../models/user";
+import {User} from "../models/user";
 import {FastifyInstance} from "fastify";
 
+/** @module IPHistorySeeder */
+
 /**
- *
+ * Seeds the ip_history table
  */
 class IPHistorySeeder extends Seeder {
 

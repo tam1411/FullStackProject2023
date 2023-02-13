@@ -1,8 +1,13 @@
 import {BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, Relation} from "typeorm";
 // @ts-ignore
-import User from "./user.ts";
+import {User} from "./user.ts";
+
+/** @module IPHistory */
 
 @Entity()
+/**
+ * IPHistory model - holds all IPs a user has logged in with
+ */
 export class IPHistory extends BaseEntity {
 	@PrimaryGeneratedColumn()
 	id: string;

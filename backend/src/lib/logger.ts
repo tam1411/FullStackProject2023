@@ -1,5 +1,7 @@
 import fs from "fs";
 
+/** @module Logger */
+
 const logDir = import.meta.env["VITE_LOGS_DIR"];
 
 // Create directory to store logs if it doesn't exist

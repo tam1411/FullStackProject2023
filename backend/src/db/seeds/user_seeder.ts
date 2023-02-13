@@ -1,13 +1,13 @@
-import User from "../models/user";
+import {User} from "../models/user";
 import {Seeder} from "../../lib/seed_manager";
 import {FastifyInstance} from "fastify";
 
+/** @module UserSeeder */
+
 /**
- * This seeds the users table
- *
+ * UserSeeder class - Model class for interacting with "users" table
  */
 class UserSeeder extends Seeder {
-
 	override async run(app: FastifyInstance) {
 		app.log.info("Seeding Users...");
 		// clear out whatever's already there

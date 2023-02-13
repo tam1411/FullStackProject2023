@@ -141,10 +141,4 @@
     "src/**/*.ts",
     "test/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"
   ],
-  "typedocOptions": {
-    "entryPoints": [
-      "src/"
-    ],
-    "out": "docs"
-  }
 }

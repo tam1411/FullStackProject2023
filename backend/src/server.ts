@@ -10,6 +10,8 @@ import logger from "./lib/logger";
 import {doggr_routes} from "./routes";
 import DbPlugin from "./plugins/database";
 
+/** @module Server */
+
 /**
  * This is our main "Create App" function.  Note that it does NOT start the server, this only creates it
  *

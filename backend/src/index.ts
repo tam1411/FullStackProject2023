@@ -6,6 +6,12 @@ import SeedManager from "./lib/seed_manager";
 import SeederOptions from "./db/seeds/seeder_options";
 import {getModeFromArgs, RunMode} from "./lib/helpers";
 
+/** @module Index */
+
+/**
+ * Constructs Fastify instance
+ * @param {boolean} useLogging whether to log the server or not
+ */
 const app = await buildApp(true);
 
 try {

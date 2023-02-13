@@ -43,7 +43,7 @@ export default defineConfig({
 		port: env.VITE_PORT,
 	},
 	plugins: [
-		dts(),
+		//dts(), // this will force-generate .d.ts files in build dir, occasionally useful for debugging
 		...VitePluginNode({
 			// Nodejs native Request adapter
 			adapter: "fastify",
@@ -59,7 +59,6 @@ export default defineConfig({
 			// Optional, default: 'esbuild', using swc for TypeORM support
 			tsCompiler: "swc",
 		}),
-		dts(),
 	],
 	resolve: {
 		alias: {

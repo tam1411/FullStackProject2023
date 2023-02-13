@@ -1,29 +1,36 @@
 import cors from "cors";
 import {FastifyInstance, FastifyReply, FastifyRequest, RouteShorthandOptions} from "fastify";
-import User from "./db/models/user";
+import {User} from "./db/models/user";
 import {IPHistory} from "./db/models/ip_history";
 
+/** @module Routes */
 
 /**
- * This is the fn we pass to app.register() in order to configure all of our routes
- *
- * @param app Our main fastify Instance
- *
- * @return  Promise<void> upon completion of routes registration
+ * App plugin where we construct our routes
+ * @param {FastifyInstance} app our main Fastify app instance
  */
-export async function doggr_routes(app: FastifyInstance) {
+export async function doggr_routes(app: FastifyInstance): Promise<void> {
 
 	// Middleware
 	// TODO: Refactor this in favor of fastify-cors
 	app.use(cors());
 
-	// Endpoint routes
-	// Test route to test-testing
+	/**
+	 * Route replying to /test path for test-testing
+	 * @name get/test
+	 * @function
+	 * @inner
+	 */
 	app.get("/test", async (request: FastifyRequest, reply: FastifyReply) => {
 		reply.send("GET Test");
 	});
 
-	// Get all users
+	/**
+	 * Route serving login form.
+	 * @name get/users
+	 * @function
+	 * @inner
+	 */
 	app.get("/users", async (req, reply) => {
 		let users = await app.db.user.find();
 		reply.send(users);

@@ -1,5 +1,10 @@
 import {MigrationInterface, QueryRunner} from "typeorm";
 
+/** @module Migrations */
+
+/**
+ * This migration sets up our initial database state
+ */
 export class Initialize1676281754950 implements MigrationInterface {
 	name = 'Initialize1676281754950';
 
