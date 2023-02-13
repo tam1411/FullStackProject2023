@@ -19,7 +19,6 @@ export async function doggr_routes(app: FastifyInstance): Promise<void> {
 	 * Route replying to /test path for test-testing
 	 * @name get/test
 	 * @function
-	 * @inner
 	 */
 	app.get("/test", async (request: FastifyRequest, reply: FastifyReply) => {
 		reply.send("GET Test");
@@ -29,7 +28,6 @@ export async function doggr_routes(app: FastifyInstance): Promise<void> {
 	 * Route serving login form.
 	 * @name get/users
 	 * @function
-	 * @inner
 	 */
 	app.get("/users", async (req, reply) => {
 		let users = await app.db.user.find();
@@ -61,18 +59,16 @@ export async function doggr_routes(app: FastifyInstance): Promise<void> {
 		}
 	};
 
-	// Appease typescript request gods
-	interface IPostUsersBody {
-		name: string,
-		email: string,
-	}
 
-	// Appease typescript response gods
-	interface IPostUsersResponse {
-		user: User,
-		ip_address: string
-	}
 
+	/**
+	 * Route allowing creation of a new user.
+	 * @name post/users
+	 * @function
+	 * @param {string} name - user's full name
+	 * @param {string} email - user's email address
+	 * @returns {IPostUsersResponse} user and IP Address used to create account
+	 */
 	app.post<{
 		Body: IPostUsersBody,
 		Reply: IPostUsersResponse
@@ -94,4 +90,27 @@ export async function doggr_routes(app: FastifyInstance): Promise<void> {
 		// https://github.com/fastify/fastify/issues/4017
 		await reply.send(JSON.stringify({user, ip_address: ip.ip}));
 	});
+}
+
+// Appease typescript request gods
+interface IPostUsersBody {
+	name: string,
+	email: string,
+}
+
+/**
+ * @typedef {object} IPostUsersResponse
+ * @module Routes
+ * @property {User} IPostUsersResponse.user
+ * @property {string} IPostUsersResponse.ip_address
+ */
+export type IPostUsersResponse = {
+	/**
+	 * User created by request
+	 */
+	user: User,
+	/**
+	 * IP Address user used to create account
+	 */
+	ip_address: string
 }
