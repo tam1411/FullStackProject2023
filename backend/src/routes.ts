@@ -16,8 +16,13 @@ export async function doggr_routes(app: FastifyInstance) {
 		reply.send("GET Index");
 	});
 
+	// Get all users
+	app.get("/users", async (req, reply) => {
+		let users = await app.db.user.find();
+		reply.send(users);
+	});
 	// CRUD impl for users
-	// Create new user 
+	// Create new user
 
 	app.post("/users", async (req, res) => {
 		const user = new User();

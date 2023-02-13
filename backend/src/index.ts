@@ -13,7 +13,7 @@ if (process.argv[2] === "-seed") {
 	try {
 		app.log.info("Starting seed");
 
-		await SeedManager.seedAll(app.log, SeederOptions);
+		await SeedManager.seedAll(app, SeederOptions);
 
 		app.log.info("Seeding done, cleaning up after ourselves...");
 

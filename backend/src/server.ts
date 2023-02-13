@@ -1,3 +1,5 @@
+// noinspection ES6MissingAwait
+
 // This will let us use our basic middlewares now, then transition to hooks later
 import fastifyMiddie from "@fastify/middie";
 import staticFiles from "@fastify/static";
@@ -10,38 +12,36 @@ import DbPlugin from "./plugins/database";
 
 
 // This is our main "Create App" function.  Note that it does NOT start the server, this only creates it
-export async function buildApp(useLogging: boolean, useDatabase: boolean = true) {
-	// enables fancy logs and disabling them during tests
+export async function buildApp(useLogging: boolean) {
 	const app = useLogging ?
 		Fastify({
+			// enables fancy logs and disabling them during tests
 			logger,
 		})
 		: Fastify({logger: false});
 
-	// add express-like 'app.use' middleware support
-	await app.register(fastifyMiddie);
+	try {
+		// add express-like 'app.use' middleware support
+		await app.register(fastifyMiddie);
 
-	// add static file handling
-	await app.register(staticFiles, {
-		root: path.join(getDirName(import.meta), "../public"),
-		prefix: "/public/",
-	});
+		// add static file handling
+		await app.register(staticFiles, {
+			root: path.join(getDirName(import.meta), "../public"),
+			prefix: "/public/",
+		});
 
-	// Adds all of our Router's routes to the app
-	await app.register(doggr_routes);
+		// Adds all of our Router's routes to the app
+		app.log.info("Registering routes");
+		await app.register(doggr_routes);
 
-	// VITEST sets this MODE env var to "test" when testing, so we bail on database
-	if (import.meta.env.MODE !== "test" && useDatabase) {
-		try {
-			app.log.info("Connecting to Database...");
-			// IMPORTANT - read Production Replacement here: https://vitejs.dev/guide/env-and-mode.html
-			// Yes, Javascript REALLY IS this annoying
-			await app.register(DbPlugin);
+		// Connects to postgres
+		app.log.info("Connecting to Database...");
+		await app.register(DbPlugin);
 
-			app.log.info("DB connected...");
-		} catch (err) {
-			app.log.error(err);
-		}
+		app.log.info("App built successfully.");
+	} catch (err) {
+		console.error(err);
+		process.exit(1);
 	}
 
 	return app;

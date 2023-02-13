@@ -1,19 +1,22 @@
 import User from "../models/user";
-import {faker} from "@faker-js/faker";
 import {Seeder} from "../../lib/seed_manager";
-import {FastifyBaseLogger} from "fastify";
+import {FastifyInstance} from "fastify";
 
 class UserSeeder extends Seeder {
 
-	override async run(log: FastifyBaseLogger) {
+	override async run(app: FastifyInstance) {
+		app.log.info("Seeding Users...");
+		// clear out whatever's already there
+		// note we cannot use .clear() because postgres cascade is bugged in Typeorm
+		// https://github.com/typeorm/typeorm/issues/1649
+		await app.db.user.delete({});
 
-		log.info("Seeding Users...");
 		for (let i = 0; i < 10; i++) {
 			let user = new User();
-			user.name = faker.name.fullName();
-			user.email = faker.internet.email();
+			user.name = "user" + i;
+			user.email = "user" + i + "@email.com";
 			await user.save();
-			log.info("Seeded user " + i);
+			app.log.info("Seeded user " + i);
 		}
 	}
 }

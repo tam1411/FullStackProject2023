@@ -1,18 +1,18 @@
-import {FastifyBaseLogger} from "fastify";
+import {FastifyInstance} from "fastify";
 
 export type SeederOptions = {
 	seeds: Array<Seeder>;
 }
 
 export class Seeder {
-	async run(log: FastifyBaseLogger) {
+	async run(app: FastifyInstance) {
 	}
 }
 
 class SeedMgr {
-	async seedAll(log: FastifyBaseLogger, options: SeederOptions) {
+	async seedAll(app: FastifyInstance, options: SeederOptions) {
 		for (let i = 0; i < options.seeds.length; i++) {
-			await options.seeds[i].run(log);
+			await options.seeds[i].run(app);
 		}
 	}
 }

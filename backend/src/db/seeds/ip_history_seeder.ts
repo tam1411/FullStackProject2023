@@ -2,12 +2,15 @@ import {faker} from "@faker-js/faker";
 import {Seeder} from "../../lib/seed_manager";
 import {IPHistory} from "../models/ip_history";
 import User from "../models/user";
-import {FastifyBaseLogger} from "fastify";
+import {FastifyInstance} from "fastify";
 
+// note here that using faker makes testing a bit...hard
 class IPHistorySeeder extends Seeder {
 
-	override async run(log: FastifyBaseLogger) {
-		log.info("Seeding IP Histories...");
+	override async run(app: FastifyInstance) {
+		app.log.info("Seeding IP Histories...");
+		// Remove everything in there currently
+		await app.db.ip.delete({});
 		// get our users and make each a few IPs
 		const users = await User.find();
 
@@ -19,7 +22,7 @@ class IPHistorySeeder extends Seeder {
 			const eachResult = await ip.save();
 			ip.ip = faker.internet.ip();
 			const secondResult = await ip.save();
-			log.info("Finished seeding IP history pair for user: " + i);
+			app.log.info("Finished seeding IP history pair for user: " + i);
 		}
 	}
 }

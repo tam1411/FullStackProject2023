@@ -10,8 +10,6 @@ import {UserCreation1676207964272} from "./src/db/migrations/1676207964272-UserC
 
 dotenv.config();
 
-//npm run typeorm migration:run -- -d ./data-source-default.ts
-
 // @ts-ignore
 const env = process.env;
 

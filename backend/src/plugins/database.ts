@@ -6,7 +6,6 @@ import User from "../db/models/user";
 import {IPHistory} from "../db/models/ip_history";
 import {FastifyInstance, FastifyPluginOptions} from "fastify";
 import {AppDataSource} from "../../postgres_datasource";
-//import { PostgresDatasource } from "../db/datasources/postgres_datasource";
 
 // This is AWESOME - we're telling typescript we're adding our own "thing" to base 'app', so we get FULL IDE/TS support
 declare module 'fastify' {
@@ -30,16 +29,14 @@ interface DBConfigOpts {
 }
 
 const DbPlugin = fp(async (app: FastifyInstance, options: FastifyPluginOptions, done: any) => {
-	// Note that we don't HAVE to try/catch errors, we can also let them bubble
-	//try {
 
-	const env = import.meta.env;
 	const dataSourceConnection = AppDataSource;
 
 	await dataSourceConnection.initialize();
 	let results = await dataSourceConnection.getRepository(User).find();
-	app.log.warn("Found user count: " + results.length);
-
+	if (results.length <= 0) {
+		app.log.warn("Database has no users, possibly indicating we forgot to seed");
+	}
 
 	// this object will be accessible from any fastify server instance
 	// app.status(200).send()
