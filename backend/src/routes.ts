@@ -3,7 +3,14 @@ import {FastifyInstance, FastifyReply, FastifyRequest, RouteShorthandOptions} fr
 import User from "./db/models/user";
 import {IPHistory} from "./db/models/ip_history";
 
-// This is the fn we pass to app.register() in order to configure all of our routes
+
+/**
+ * This is the fn we pass to app.register() in order to configure all of our routes
+ *
+ * @param app Our main fastify Instance
+ *
+ * @return  Promise<void> upon completion of routes registration
+ */
 export async function doggr_routes(app: FastifyInstance) {
 
 	// Middleware

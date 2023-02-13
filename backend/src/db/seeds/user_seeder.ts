@@ -2,6 +2,10 @@ import User from "../models/user";
 import {Seeder} from "../../lib/seed_manager";
 import {FastifyInstance} from "fastify";
 
+/**
+ * This seeds the users table
+ *
+ */
 class UserSeeder extends Seeder {
 
 	override async run(app: FastifyInstance) {

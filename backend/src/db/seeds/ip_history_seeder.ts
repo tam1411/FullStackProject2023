@@ -4,7 +4,9 @@ import {IPHistory} from "../models/ip_history";
 import User from "../models/user";
 import {FastifyInstance} from "fastify";
 
-// note here that using faker makes testing a bit...hard
+/**
+ *
+ */
 class IPHistorySeeder extends Seeder {
 
 	override async run(app: FastifyInstance) {
@@ -18,6 +20,7 @@ class IPHistorySeeder extends Seeder {
 			let ip = new IPHistory();
 			ip.user = users[i];
 
+			// note here that using faker makes testing a bit...hard
 			ip.ip = faker.internet.ip();
 			const eachResult = await ip.save();
 			ip.ip = faker.internet.ip();

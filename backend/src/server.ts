@@ -3,15 +3,20 @@
 // This will let us use our basic middlewares now, then transition to hooks later
 import fastifyMiddie from "@fastify/middie";
 import staticFiles from "@fastify/static";
-import Fastify from "fastify";
+import Fastify, {FastifyInstance} from "fastify";
 import path from "path";
 import {getDirName} from "./lib/helpers";
 import logger from "./lib/logger";
 import {doggr_routes} from "./routes";
 import DbPlugin from "./plugins/database";
 
-
-// This is our main "Create App" function.  Note that it does NOT start the server, this only creates it
+/**
+ * This is our main "Create App" function.  Note that it does NOT start the server, this only creates it
+ *
+ * @param useLogging Whether to log or not
+ *
+ * @return  FastifyInstance
+ */
 export async function buildApp(useLogging: boolean) {
 	const app = useLogging ?
 		Fastify({
@@ -47,10 +52,16 @@ export async function buildApp(useLogging: boolean) {
 	return app;
 }
 
-// Takes a created app and starts it listening on given port
-export async function listen(app: any) {
+/**
+ * This is what actively starts the server listening on a port
+ *
+ * @param app: FastifyInstance main server instance created in buildApp()
+ *
+ * @return  Promise<void> When server closes
+ */
+export async function listen(app: FastifyInstance) {
 	try {
-		void await app.listen({ // Config object is optional and defaults to { host: 'localhost', port: 3000 }
+		await app.listen({ // Config object is optional and defaults to { host: 'localhost', port: 3000 }
 			host: import.meta.env.VITE_IP_ADDR,
 			port: Number(import.meta.env.VITE_PORT),
 		}, (err: any) => {  // Listen handler doesn't need to do much except report errors!

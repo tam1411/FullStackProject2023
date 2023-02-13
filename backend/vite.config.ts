@@ -6,6 +6,7 @@ import {loadEnv} from "vite";
 import {VitePluginNode} from "vite-plugin-node";
 import {configDefaults, defineConfig, UserConfig as VitestUserConfigInterface} from "vitest/config";
 import {getDirName} from "./src/lib/helpers";
+import dts from "vite-plugin-dts";
 
 // Gets us fancy typing/intellisense during dev
 const vitestConfig: VitestUserConfigInterface = {
@@ -42,6 +43,7 @@ export default defineConfig({
 		port: env.VITE_PORT,
 	},
 	plugins: [
+		dts(),
 		...VitePluginNode({
 			// Nodejs native Request adapter
 			adapter: "fastify",
@@ -57,6 +59,7 @@ export default defineConfig({
 			// Optional, default: 'esbuild', using swc for TypeORM support
 			tsCompiler: "swc",
 		}),
+		dts(),
 	],
 	resolve: {
 		alias: {
