@@ -29,6 +29,7 @@ try {
 			} catch (err) {
 				app.log.error("Error seeding database" + err);
 			}
+			break;
 		}
 	}
 } catch (err) {

@@ -1,14 +1,14 @@
-import dotenv from "dotenv";
-import {DataSource} from 'typeorm';
-// https://github.com/microsoft/TypeScript/pull/52230 bug why we have to ts-ignore these
-// @ts-ignore
-import {User} from "../models/user.ts";
-// @ts-ignore
-import {IPHistory} from "../models/ip_history.ts";
-// @ts-ignore
-import {UserCreation1676207964272} from "./src/db/migrations/1676207964272-UserCreation.ts";
+// @ts-nocheck
+// We disable typescript checking for this file because it's a config file
 
+// We need dotenv here because our datasources are processed from CLI in addition to vite
+import dotenv from "dotenv";
 dotenv.config();
+import {DataSource} from 'typeorm';
+// Similar reasoning as above, we need to add the file extensions to this file's imports for CLI usage
+import {User} from "../models/user.ts";
+import {IPHistory} from "../models/ip_history.ts";
+import {Initialize1676281754950} from "../migrations/1676281754950-Initialize";
 
 // @ts-ignore
 const env = process.env;
@@ -26,7 +26,10 @@ export const AppDataSource = new DataSource(
 			User,
 			IPHistory
 		],
+		migrations: [
+			Initialize1676281754950
+		],
 		// DANGER DANGER our convenience will nuke production data!
-		synchronize: true,
+		synchronize: false,
 	}
 );

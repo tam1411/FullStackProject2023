@@ -6,6 +6,10 @@ import {IPHistory} from "../models/ip_history";
 import {User} from "../models/user";
 import {FastifyInstance} from "fastify";
 
+// note here that using faker makes testing a bit...hard
+// We can set a particular seed for faker, then use it later in our testing!
+faker.seed(100);
+
 /**
  * Seeds the ip_history table
  */
@@ -28,7 +32,6 @@ export class IPHistorySeeder extends Seeder {
 			let ip = new IPHistory();
 			ip.user = users[i];
 
-			// note here that using faker makes testing a bit...hard
 			ip.ip = faker.internet.ip();
 			const eachResult = await ip.save();
 			ip.ip = faker.internet.ip();

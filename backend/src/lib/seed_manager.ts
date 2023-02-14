@@ -1,9 +1,6 @@
 /** @module SeedManager */
 import {FastifyInstance} from "fastify";
-
-export type SeederOptions = {
-	seeds: Array<Seeder>;
-}
+import {SeederOptionsType} from "../db/seeds/seeder_options";
 
 /**
  * Base Abstract Seeder class meant to be implemented by derived seeds
@@ -26,7 +23,7 @@ class SeedMgr {
 	/**
 	 * Performs seed on all Seeder files
 	 */
-	async seedAll(app: FastifyInstance, options: SeederOptions) {
+	async seedAll(app: FastifyInstance, options: SeederOptionsType) {
 		// Go through every seeder included in our options (See index.ts)
 		for (let i = 0; i < options.seeds.length; i++) {
 			// Runs each seeder's "run" method (See db/seeds/user_seeder.ts)
