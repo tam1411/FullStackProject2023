@@ -6,6 +6,7 @@ import {loadEnv} from "vite";
 import {VitePluginNode} from "vite-plugin-node";
 import {configDefaults, defineConfig, UserConfig as VitestUserConfigInterface} from "vitest/config";
 import {getDirName} from "./src/lib/helpers";
+import dts from "vite-plugin-dts";
 
 // Gets us fancy typing/intellisense during dev
 const vitestConfig: VitestUserConfigInterface = {
@@ -34,6 +35,14 @@ export default defineConfig({
 		emptyOutDir: true,
 		outDir: "build",
 		target: "modules",
+		rollupOptions: {
+
+			output: {
+				manualChunks: {
+
+				}
+			}
+		}
 	},
 	// For html/css/etc files that get copied as-is, rather than compiled, during a build
 	publicDir: "./public",
@@ -42,6 +51,7 @@ export default defineConfig({
 		port: env.VITE_PORT,
 	},
 	plugins: [
+		//dts(), // this will force-generate .d.ts files in build dir, occasionally useful for debugging
 		...VitePluginNode({
 			// Nodejs native Request adapter
 			adapter: "fastify",

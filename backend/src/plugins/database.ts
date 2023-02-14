@@ -1,13 +1,15 @@
-// src/plugins/db.ts
+/** @module DatabasePlugin */
 import "reflect-metadata";
 import fp from "fastify-plugin";
 import {DataSource, Repository} from "typeorm";
-import User from "../db/models/user";
+import {User} from "../db/models/user";
 import {IPHistory} from "../db/models/ip_history";
 import {FastifyInstance, FastifyPluginOptions} from "fastify";
+import {AppDataSource} from "../db/datasources/dev_datasource";
 
 
-// This is AWESOME - we're telling typescript we're adding our own "thing" to base 'app', so we get FULL IDE/TS support
+
+/** This is AWESOME - we're telling typescript we're adding our own "thing" to base 'app', so we get FULL IDE/TS support */
 declare module 'fastify' {
 
 	interface FastifyInstance {
@@ -28,29 +30,16 @@ interface DBConfigOpts {
 	connection: DataSource,
 }
 
+/**
+ * Connects and decorates fastify with our Database connection
+ * @function
+ */
 const DbPlugin = fp(async (app: FastifyInstance, options: FastifyPluginOptions, done: any) => {
-	// Note that we don't HAVE to try/catch errors, we can also let them bubble
-	//try {
 
-	const env = import.meta.env;
-	const dataSourceConnection = new DataSource(
-		{
-			type: "postgres",
-			host: env.VITE_DB_HOST,
-			port: env.VITE_DB_PORT,
-			username: env.VITE_DB_USER,
-			password: env.VITE_DB_PASS,
-			database: env.VITE_DB_NAME,
-			// entities are used to tell TypeORM which tables to create in the database
-			entities: [
-				User,
-				IPHistory
-			],
-			synchronize: true,
-		}
-	);
+	const dataSourceConnection = AppDataSource;
 
 	await dataSourceConnection.initialize();
+
 
 	// this object will be accessible from any fastify server instance
 	// app.status(200).send()

@@ -1,3 +1,4 @@
+/** @module Models/User */
 import {
 	BaseEntity,
 	Column,
@@ -5,12 +6,18 @@ import {
 	Entity,
 	OneToMany,
 	PrimaryGeneratedColumn,
+	Relation,
 	UpdateDateColumn
 } from "typeorm";
-import {IPHistory} from "./ip_history";
 
-@Entity()
-export default class User extends BaseEntity {
+// @ts-ignore
+import {IPHistory} from "./ip_history.ts";
+
+/**
+ *  Class representing user table
+ */
+@Entity({name: "users"})
+export class User extends BaseEntity {
 	@PrimaryGeneratedColumn()
 	id: number;
 
@@ -23,8 +30,8 @@ export default class User extends BaseEntity {
 	@Column('text')
 	email: string;
 
-	@OneToMany((type) => IPHistory, (ip) => ip.user)
-	ips: IPHistory[];
+	@OneToMany((type) => IPHistory, (ip: IPHistory) => ip.user)
+	ips: Relation<IPHistory[]>;
 
 	@CreateDateColumn()
 	created_at: string;
@@ -32,6 +39,3 @@ export default class User extends BaseEntity {
 	@UpdateDateColumn()
 	updated_at: string;
 }
-
-// let fooUser = new User();
-// fooUser.name fooUser.email
