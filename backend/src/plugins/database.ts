@@ -6,6 +6,8 @@ import {User} from "../db/models/user";
 import {IPHistory} from "../db/models/ip_history";
 import {FastifyInstance, FastifyPluginOptions} from "fastify";
 import {AppDataSource} from "../db/datasources/dev_datasource";
+import {Course} from "../db/models/course";
+import {Review} from "../db/models/review";
 
 
 
@@ -27,6 +29,8 @@ declare module 'fastify' {
 interface DBConfigOpts {
 	user: Repository<User>,
 	ip: Repository<IPHistory>,
+	course: Repository<Course>,
+	review: Repository<Review>,
 	connection: DataSource,
 }
 
@@ -47,7 +51,9 @@ const DbPlugin = fp(async (app: FastifyInstance, options: FastifyPluginOptions, 
 	app.decorate("db", {
 		connection: dataSourceConnection,
 		user: dataSourceConnection.getRepository(User),
-		ip: dataSourceConnection.getRepository(IPHistory)
+		ip: dataSourceConnection.getRepository(IPHistory),
+		course: dataSourceConnection.getRepository(Course),
+		review: dataSourceConnection.getRepository(Review)
 	});
 
 	done();

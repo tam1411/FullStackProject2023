@@ -3,15 +3,19 @@ import {
 	BaseEntity,
 	Column,
 	CreateDateColumn,
-	Entity,
+	Entity, JoinTable, ManyToMany,
 	OneToMany,
 	PrimaryGeneratedColumn,
 	Relation,
 	UpdateDateColumn
 } from "typeorm";
 
-// @ts-ignore
+//@ts-ignore
 import {IPHistory} from "./ip_history.ts";
+//@ts-ignore
+import {Course} from "./course.ts";
+//@ts-ignore
+import {Review} from "./review.ts";
 
 /**
  *  Class representing user table
@@ -32,6 +36,25 @@ export class User extends BaseEntity {
 
 	@OneToMany((type) => IPHistory, (ip: IPHistory) => ip.user)
 	ips: Relation<IPHistory[]>;
+
+	//One user can take multiples courses.
+	@OneToMany((type) => Course, (course: Course) => course.user)
+	courses: Relation<Course[]>;
+
+	//For bad words update
+	@Column({
+		default: 0
+	})
+	badwords!: number;
+
+	// Me when like review of other users
+	@OneToMany((type) => Review, (review:Review) => review.whoIlike)
+	liking: Relation<Review[]>;
+
+	// Users who likes my review
+	@OneToMany((type) => Review, (review:Review) => review.wholikeme)
+	liked: Relation<Review[]>;
+
 
 	@CreateDateColumn()
 	created_at: string;
